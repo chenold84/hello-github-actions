@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Set for PR trigger.
         run: echo "lables=matrix::${{github.event.pull_request.labels.*.name}}" >> $GITHUB_ENV
-        if: ${{ github.event_name == pull_request }}
+        if: github.event_name == pull_request
       - name: Set for PR trigger.
         run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
         if: ${{ github.event_name == workflow_dispatch }}
