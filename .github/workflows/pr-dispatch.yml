@@ -22,13 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set for PR trigger..
-        run: echo "lables=${{ format('[{0}]', join(github.event.pull_request.labels.*.name, ', ')) }}" >> $GITHUB_ENV
+        run: echo "lables=${{ format('[{0}]', join(github.event.pull_request.labels.*.name, ', ')) }}" >> $GITHUB_OUTPUT
         if: ${{ github.event_name == 'pull_request' }}
       - name: Set for PR trigger.
-        run: echo "lables=${{format('[{0}]', inputs.label_input)}}" >> $GITHUB_ENV
+        run: echo "lables=${{format('[{0}]', inputs.label_input)}}" >> $GITHUB_OUTPUT
         if: ${{ github.event_name == 'workflow_dispatch' }}
-      - name: print env variable
-        run: echo "${{ toJSON(env.lables) }}"
 
   use-matrix:
     runs-on: ubuntu-latest
@@ -36,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        loc_labels: ${{ toJSON(env.lables) }}
+        loc_labels: ${{ fromJSON(needs.set-matrix.outputs.lables) }}
     steps:
       - name: Print each value.
         run: echo "${{ matrix.loc_labels }}"
