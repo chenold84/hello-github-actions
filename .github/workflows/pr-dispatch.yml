@@ -28,4 +28,4 @@ jobs:
         run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'workflow_dispatch' }}
       - name: print env variable
-        run: echo "${{ fromJSON(env.lables) }}"
+        run: echo "${{ toJSON(env.lables) }}"
