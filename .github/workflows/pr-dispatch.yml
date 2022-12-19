@@ -29,13 +29,14 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
       - name: print env variable
         run: echo "${{ toJSON(env.lables) }}"
+
   use-matrix:
     runs-on: ubuntu-latest
     needs: set-matrix
     strategy:
       fail-fast: false
       matrix:
-        env_labels: ${{ fromJSON(env.lables) }}
+        loc_labels: ${{ toJSON(env.lables) }}
     steps:
       - name: Print each value.
-        run: echo "${{ matrix.env_labels }}"
+        run: echo "${{ matrix.loc_labels }}"
