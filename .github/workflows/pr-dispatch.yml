@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set for PR trigger..
-        run: echo "lables=${{ toJSON(github.event.pull_request.labels.*.name) }}" >> $GITHUB_ENV
+        run: echo "lables=${{ join(github.event.pull_request.labels.*.name, ', ') }}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'pull_request' }}
       - name: Set for PR trigger.
         run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'workflow_dispatch' }}
       - name: print env variable
-        run: echo "${{ env.lables }}"
+        run: echo "${{ fromJSON(env.lables) }}"
