@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set for PR trigger..
-        run: echo "lables=${{ join(github.event.pull_request.labels.*.name, ', ') }}" >> $GITHUB_ENV
+        run: echo "lables=${{ format('[{0}]', join(github.event.pull_request.labels.*.name, ', ')) }}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'pull_request' }}
       - name: Set for PR trigger.
         run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
