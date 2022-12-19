@@ -21,11 +21,11 @@ jobs:
   set-matrix:
     runs-on: ubuntu-latest
     steps:
-      - name: Set for PR trigger.
-        run: echo "lables=${{ github.event.pull_request.labels.*.name }}" >> $GITHUB_ENV
+      - name: Set for PR trigger..
+        run: echo "lables=${{ toJSON(github.event.pull_request.labels.*.name) }}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'pull_request' }}
       - name: Set for PR trigger.
         run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
         if: ${{ github.event_name == 'workflow_dispatch' }}
       - name: print env variable
-        run: echo "${{ toJSON(env.lables) }}"
+        run: echo "${{ env.lables }}"
