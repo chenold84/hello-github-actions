@@ -24,7 +24,10 @@ jobs:
       matrix: steps.pr-trigger.outputs.lables
     steps:
       - name: Set for PR trigger..
-        run: echo "lables=${{ toJSON(github.event.pull_request.labels) }}" >> $GITHUB_OUTPUT
+        run: |
+          echo 'lables<<EOF' >> $GITHUB_OUTPUT
+          echo '${{ toJSON(github.event.pull_request.labels) }}' >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
         if: ${{ github.event_name == 'pull_request' }}
         id: pr-trigger
       - name: Set for workflow trigger.
