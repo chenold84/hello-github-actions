@@ -1,0 +1,31 @@
+name: Workflow which handles PR and workflow dispatch trigger.
+on:
+  pull_request:
+    types: [opened, edited]
+  workflow_dispatch:
+    inputs:
+      label_input:
+        description: label value as input.
+        type: choice
+        required: true
+        options:
+          - bug
+          - duplicate
+          - enhancement
+      downstream_trigger:
+        description: Workflow from which the build is triggered.
+        type: string
+        required: true
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set for PR trigger.
+        run: echo "lables=matrix::${{github.event.pull_request.labels.*.name}}" >> $GITHUB_ENV
+        if: ${{ github.event_name == "pull_request" }}
+      - name: Set for PR trigger.
+        run: echo "lables=matrix::${{inputs.label_input}}" >> $GITHUB_ENV
+        if: ${{ github.event_name == "workflow_dispatch" }}
+      - name: print env variable
+        run: echo "${{ fromJson(env.lables) }}"
